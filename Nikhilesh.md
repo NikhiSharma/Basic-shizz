@@ -163,62 +163,6 @@ top of OCRed output.
 ![non end to end approaches](images/none2e.png)
 
 
-<!-- The ViT[[1]](#1) model uses a Transformer-like architecture to classify images.
-An image is split into fixed-size patches, each patch is embedded,
-position embeddings are added, and the resulting sequence of vectors is
-fed to a standard Transformer encoder. The standard approach of adding
-an extra learnable classification token to the sequence is used to
-perform classification.
-
-The self-attention mechanism in the transformer is used to calculate a
-weighted sum of the input vectors, where the weight for each vector is
-based on the dot product of the query vector with the key vector for
-that vector.
-
-This can be written mathematically as:
-</div>
-
-<span> $$\mathrm{Attention}(Q, K, V) = \mathrm{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$ </span>
-
-where \(Q\) is the query matrix, \(K\) is the key matrix, \(V\) is the value
-matrix, and \(d_k\) is the dimension of the keys. -->
-
-
-<div class="tip" markdown="1">
-
-### Complexity for Efficient Attention mechanisms
-
-</div>
-
-A image of size \(H X W X M\) is first divided into smaller tokens of size \(P\) X \(P\) X \(M\) where \(P\) is the patch size and \(M\) is the number of channels. The total number of tokens is \(N = H * W / P^2\).
-
-These image patches are then projected to a dimension of \(C\) using a linear projection. The complexity of each attention mechanism is given below:
-
-
-<div class="tip" markdown="1">
-
-| Model                   | Architecture Complexity |
-| ----------------------- | ----------------------- |
-| Transformer (SA)        | O($$N^2C$$)             |
-| Linformer (LA)          | O($$N^2C$$)             |
-| Performer (PA)          | O($$NC^2$$)             |
-| Fastformer (AA)         | O($$NC$$)               |
-| XCiT (XCA)              | O($$NC^2$$)             |
-| Swin Transformer (Swin) | O($$NC^3$$)             |
-
-
-## Model Architecture - Transformer Backbone
-
-In order to perform a fair comparison across the different attention mechanisms, we use a common transformer backbone architecture for all our experiments.
-
-
-* We first divide the input images into a fixed number of patches (for all results here, we use the patch size as 7)
-* We then obtain the patch embeddings that are fed as input to a sequence of modules. Each module includes a **Transformer block** and a **Patch Merge** operation.
-* The Patch Merge operation combines every 2 x 2 patch into a single one as the depth of the model increases. This has the effect of reducing the sequence length (number of patches).
-* In the final module, instead of a Patch Merge operation, we have a **Patch Pooling** operation. This effectively averages the representation over all patches giving us a single feature vector for the image that is then fed as input to the linear **Classifier** layer.
-* The model is optimized using the Cross-Entropy loss.
-* For each of our experiments, the overall structure of the model remains fixed and only the **type of attention** used in the Transformer layers is modified.
-
 # Results
 
 ## Top-1 Accuracy
