@@ -175,6 +175,8 @@ was confused most by the BERT model leading to poorer results for non-end
 to end system, while the end2end system uses the conventional question that
 follows the answer from the image to get better accuracy.
 
+Comparison of F1 scores on FUNSD dataset by class
+
  Class       	| Non-end-to-end 	| End-to-end (layoutLM)|
 |--------------------	|------------	|--------------------|
 | Question         	|     0.79    	|         0.91        	|
@@ -183,62 +185,36 @@ follows the answer from the image to get better accuracy.
 | Other           	|     0.67    	|         0.83         	|
 | Overall 	|     0.71    	|         0.845        	|
 
+## Labelling Stanford visual search
 
-<!-- For all of the models we have included as part of this report, we adjust
-the model configuration (number of layers, feed-forward units, etc.) to
-approximately 28M parameters. This allows us to conduct a fair
-comparison of the models by changing the attention mechanisms while
-keeping all other factors the same.
+As mentioned before, this dataset is intended for visual search, but we repurpose
+this dataset to do entity recognition as it is a good benchmark to test images
+less text (compared to PDF images which are dense in text). Since we dont have
+the entity labels, we create pseudolabels with GPT-3[6] api. A manual check of
+25 images entity labels shows that we get 100% accurate entities except for Fax
+vs phone. Hence we skip both these classes for evaluation.
 
-The general trends we observe from the accuracy scores are
+## Results on Stanford Visual search dataset
 
-  * Transformer models outperform the CNN baseline.
-  * Efficient attention models perform as well as or sometimes even better than the full self-attention model.
-  * Fastformer is our best performing model with a top-1 accuracy of 91%. -->
+Unlike the FUNSD datset, where the picture was very helpful
+in classifying classes, here the entities can just be classified with just the text
+and the visual placement might not have a significant effect. Taking a close look
+at the results, we find that tessaract sometimes misses @ or . and this leads to
+bert model missclassifying emails or websites, but end2end model fares better.
+
+![Stanford visual search dataset](images/funsd.png)
 
 
+## Comparison of F1 scores on the Stanford Visual Search Dataset by class
 
-
-## Benchmarking the FLOPS and Inference Latency
-
-**NOTE** : Higher FLOPs != slower inference
-
-* FLOPs is hardware agnostic, while inference time depends on the device we deploy the model on.
-* Different devices have optimizations and parallelizations for various architectures, hence inference latency and FLOPs are not necessarily correlated.
-
-### FLOPs vs Accuracy
-
-![FLOPS vs Accuracy](images/flops_accuracy.png)
-
-* Resnet-50 is not shown in the above plot since it distorts the scale. It uses 4 GFLOPs worth of computation.
-* Efficient Transformer models, on average, utilize ~35% fewer FLOPs than the full self-attention model.
-* Fastformer, our best performing model, also uses the least FLOPs - best of both worlds.
-
-### Inference Latencies on CPU
-
-![CPU Latency](images/latency_cpu.png)
-
-* We use the 2nd generation Intel Xeon Platinum 8000 series processor with all cores to compute the latency.
-* We use a batch size of 1 and average the latency over the entire test set.
-* Even though Resnet-50 uses 2.5x more FLOPs than the full self-attention transformer model, it has a lower latency time. This is because the convolution operation has been parallelized and optimized heavily for inference.
-
-### Inference Latencies on GPU
-
-![GPU Latency](images/latency_gpu.png)
-
-* We consider two classes of GPUs for inference - the RTX 2080Ti and the latest model A100.
-* While running on the GPUs, instead of a cold start, we run a few batches for warm up and then measure inference latency. A cold start can lead to unreliable inference numbers.
-* An interesting trend to observe here is that on newer GPUs that are optimized for transformers (green curve for A100) we observe a drastic reduction in the relative difference between inference time of full self attention Transformer model and the Resnet-50.
-
-## Integrated Gradients and Saliency Maps
-
-We use saliency maps to help us identify which locations in the image are important for the classification decision. Saliency maps utilize the magnitude of gradients to determine points in the image that play a crucial role in making the prediction. Higher the gradient magnitude at a particular point, the more important that location is for the image classification decision.
-
-![Saliency Maps](images/brain_attention_maps.png)
-
-* The first column is the input image, the second column is the magnitude of gradients and the third column superimposes the saliency map onto the original image.
-* The saliency maps in the above image are from the Fastformer model - we did not notice any major differences between the various transformer models.
-* This is promising - Approximation of the attention mechanism does not affect the interpretability of the model!
+ Class       	| Non-end-to-end 	| End-to-end (layoutLM)|
+|--------------------	|------------	|--------------------|
+| Name         	|     0.89     	|         0.93        	|
+| Designation          	|     0.98    	|         0.98         	|
+| Address   	|     0.79   	|         0.84        	|
+| Website           	|     0.69    	|         0.93         	|
+| Email 	|     0.72    	|         0.91        	|
+| Overall 	|     0.81   	|         0.92        	|
 
  </div>
 
