@@ -132,18 +132,38 @@ We plan to use LayoutLM as our end to end model for this project.
 
 ![End to end approaches](images/end2end.png)
 
-<!-- ResNet-50[[11]](#11) is a deep convolutional neural network trained on
-more than a million images from the ImageNet database. The network is 50
-layers deep and can classify images into 1000 different categories. It
-is one of the first networks to propose using residual connections that
-help the training process by allowing information to flow more freely
-between layers. Residual connections help the model learn the identity
-function and enable multiple layers to be stacked, allowing us to create
-much deeper models. -->
 
-### Vision Transformer
+### Non End2EndModel - CTPN
 
-The ViT[[1]](#1) model uses a Transformer-like architecture to classify images.
+CTPN refers to Connectionist Text Proposal Network. This name was given to this model 
+because it detects text lines in sequence of text proposals. 
+It uses a pre-trained VGG16 model to extract features from the image 
+and then uses a recurrent neural network to generate text proposals. 
+The proposals are then scored and refined; the final text boxes are output.
+The CTPN has several advantages over previous methods for detecting text in natural images. 
+First, it is able to detect text in a wider range of conditions, including low-light and cluttered images. 
+Second, it is able to detect text of different sizes and fonts. Third, it is able to detect text in multiple languages.
+We will use CTPN as the visual model for the non-end-to-end variant to
+extract text proposals. These text proposals would then be fed to OCR systems
+for text and LSTM/transformer-based networks for entity recognition. All these
+systems would be optimized separately.
+
+![End to end approaches](images/ctpn.png)
+
+### BERT (Natural Language Processing Model)
+
+BERT refers to Bidirectional Encoder Representations from Transformers. 
+This is a language representation model that can be used for a wide range of natural language
+processing tasks. It is pre-trained on a massive dataset of unlabeled text with
+the masked language model objective, and can be fine-tuned with just one additional output layer 
+to create state-of-the-art models for a wide range of tasks.
+We plan to adapt BERT or a variant of BERT to do entity recognition on
+top of OCRed output.
+
+![End to end approaches](images/non-end2end.png.png)
+
+
+<!-- The ViT[[1]](#1) model uses a Transformer-like architecture to classify images.
 An image is split into fixed-size patches, each patch is embedded,
 position embeddings are added, and the resulting sequence of vectors is
 fed to a standard Transformer encoder. The standard approach of adding
@@ -161,83 +181,7 @@ This can be written mathematically as:
 <span> $$\mathrm{Attention}(Q, K, V) = \mathrm{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$ </span>
 
 where \(Q\) is the query matrix, \(K\) is the key matrix, \(V\) is the value
-matrix, and \(d_k\) is the dimension of the keys.
-
-
-<div class="tip" markdown="1">
-## Efficient Transformers
-
-### Linformer
-
-Linformer[[7]](#7) is a linear transformer that breaks down the self-attention
-mechanism into smaller, linear attentions (converts O(n^2) in self
-attention to O(n)) with linear attention). This allows the Transformer
-model to avoid the self-attention bottleneck. The original scaled
-dot-product attention is decomposed into multiple smaller attentions
-through linear projections. This combination of operations forms a
-low-rank factorization of the original attention.
-
-</div>
-
-$$\operatorname{LA}(\mathbf{q}, \mathbf{k}, \mathbf{v})=\operatorname{softmax}\left(\frac{\mathbf{q}\left[W_{\text {proj }} \mathbf{k}\right]^T}{\sqrt{d_k}}\right) W_{\text {proj }} \mathbf{v}$$
-
-Here, \(q\) is the query vector, \(k\) is the key vector and \(W_{proj}\) is
-the projection matrix for the smaller self-attention spans.
-
-<div class="tip" markdown="1">
-### XCIT
-
-XCIT[[14]](#15) uses a variant of self-attention known as cross-covariance
-attention. It is a transposed version of self-attention that operates
-across the feature dimension rather than across the tokens. The authors
-of this architecture observed that using this form of attention led to
-worse interaction between tokens and degraded the quality of
-representations learned. To overcome this, XCiT introduced a local patch
-interaction module (LPI) consisting of two convolution layers. The
-attention mechanism used in this model is mathematically represented as
-
-
-
- </div>
-
-$$\operatorname{XCA}(\mathbf{q}, \mathbf{k}, \mathbf{v})=\left[\operatorname{softmax}\left(\frac{\|\mathbf{q}\|_2^T\|\mathbf{k}\|_2}{\tau}\right) \mathbf{v}^T\right]^T$$
-
-<div class="tip" markdown="1">
-
-### Fastformer
-
-The Fastformer[[8]](#8) model uses element-wise multiplication to compute attention instead of using matrix multiplication. This allows the model to incorporate global context into each token representation. The fastformer uses learnable parameters to compute the global context and then applies element-wise multiplication to combine the context with the input tokens. The resulting attention is then projected using a learnable parameter. The computation complexity of this attention mechanism is O(NC). The equation for the additive attention used in the fastformer model is as follows:
-
- </div>
-
- $$AA(q, k, v) = q + [k0 * v]W$$
-
-<div class="tip" markdown="1">
-where \(k0\) is computed using \(q0\) and \(*\) denotes element-wise multiplication. W is the projection parameter.
-
-### Swin Transformer
-The Swin transformer[[10]](#10) is a variant of the transformer model that uses a sparse self-attention mechanism to reduce computation complexity. It uses a nested window attention with normal self-attention to focus on global interactions. The computation complexity of this attention mechanism is O(NCw^2), where w is the size of the window. In experiments, the size of the window is typically set to 7 or 8 when using patch sizes of 4 or 7, respectively.
-
-### Performer
-
-The Performer[[9]](#9) model is an improved version of an attention mechanism that uses kernel approximation to compute attention. It uses a kernel function and a positive orthogonal random feature to approximate the softmax function. The performer model's attention equation is given as:
-
-</div>
-
-$$PA(q, k, v) = \frac{\psi(q)[\psi(k)^T v]}{\text{diag}(\psi(q)[\psi(k)^T \mathbb{1}_n])}$$
-
-
-<div class="tip" markdown="1">
-
-where:
-
-
-* \( ψ(·) : R dq → R r + \) is the kernel function using a positive orthogonal random feature
-* IN is an N x N identity matrix
-* The computation complexity of this attention mechanism is O(NCr), where r is the project dimension. In experiments, r is typically set to \(C^2\) to ensure that it is smaller than N.
-
-</div>
-
+matrix, and \(d_k\) is the dimension of the keys. -->
 
 
 <div class="tip" markdown="1">
