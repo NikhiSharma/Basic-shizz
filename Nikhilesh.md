@@ -165,11 +165,26 @@ top of OCRed output.
 
 # Results
 
-## Top-1 Accuracy
+## Results on FUNSD dataset 
+
+Based on the F1 scores shown in the table 1, we can see that the end-to-end
+system (LayoutLM) outperformed the non-end-to-end system on all four classes
+of the FUNSD dataset as well as the overall F1 score. The largest improvements
+were observed in the ”Answer” and ”Other” classes. In fact this the class that
+was confused most by the BERT model leading to poorer results for non-end
+to end system, while the end2end system uses the conventional question that
+follows the answer from the image to get better accuracy.
+
+ Class       	| Non-end-to-end 	| End-to-end (layoutLM)|
+|--------------------	|------------	|--------------------|
+| Question         	|     0.79    	|         0.91        	|
+| Answer          	|     0.51    	|         0.70         	|
+| Header   	|     0.89   	|         0.94        	|
+| Other           	|     0.67    	|         0.83         	|
+| Overall 	|     0.71    	|         0.845        	|
 
 
-
-For all of the models we have included as part of this report, we adjust
+<!-- For all of the models we have included as part of this report, we adjust
 the model configuration (number of layers, feed-forward units, etc.) to
 approximately 28M parameters. This allows us to conduct a fair
 comparison of the models by changing the attention mechanisms while
@@ -179,23 +194,12 @@ The general trends we observe from the accuracy scores are
 
   * Transformer models outperform the CNN baseline.
   * Efficient attention models perform as well as or sometimes even better than the full self-attention model.
-  * Fastformer is our best performing model with a top-1 accuracy of 91%.
+  * Fastformer is our best performing model with a top-1 accuracy of 91%. -->
 
 
 
 
 ## Benchmarking the FLOPS and Inference Latency
-
-| Model Config       	| Intel Xeon(s) 	| Nvidia RTX 2060 Ti(s) 	| Nvidia A100(s) 	| FLOPS (Giga)    	| Parameters (M) 	|
-|--------------------	|------------	|--------------------	|------------	|---------------	|----------------	|
-| Linformer          	|     7.13    	|         0.18        	|    0.09    	|     1.56      	| 28.56       	|
-| Performer          	|     6.249    	|         0.16         	|    0.07    	|     1.47      	| 28.28       	|
-| Swin transformer   	|     6.86   	|         0.18        	|    0.086   	|     1.50      	| 28.28       	|
-| Resnet50           	|     8.63    	|         0.2         	|    0.12     	|     4.00      	| 25.6        	|
-| Vision Transformer 	|     8.904    	|         0.26        	|    0.13    	|     1.91      	| 28.27       	|
-| Fastformer         	|     4.589    	|         0.14         	|    0.05     	|     1.45      	| 28.28       	|
-| XCIT               	|     6.452    	|         0.17         	|    0.07     	|     1.47      	| 28.28       	|
-
 
 **NOTE** : Higher FLOPs != slower inference
 
