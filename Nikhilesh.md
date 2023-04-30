@@ -224,6 +224,16 @@ Comparison of F1 scores on the Stanford Visual Search Dataset by class
 We randomly sampled 100 examples from each class and plotted the TSNE projection of the embedding.
 For LayoutLM, we use the [CLS] token, while for resnet we get embedding from image2vec library.
 
+## Conclusion and potential future work
+
+From both quantitative and qualitative results, we see that using layout information and end2end training significantly outperforms pipeline based approaches
+For Non-end2end approaches, we find that most of the errors occur due to OCR engine (we use same ocr library for both approaches) but these errors are mitigated in end2end approaches which further integrate layout and image information end2end (Errors propagate in non-end2end approaches)
+
+One potential drawback of end2end approaches is the vast amount of clean pretraining data (document text pairs and document classification datasets) needed to train the model. Ablating these resources and studying their cost comparing non-end2end approaches could be a good future work.
+
+Recent works advocate for OCR free approaches and process image single shot and pass the representations to a pretrained language model decoder which also has capabilities to do zero-shot reasoning (Question answering, mutli-step classification or more)
+
+
  </div>
 
 </body>
