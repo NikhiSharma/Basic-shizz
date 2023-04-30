@@ -148,7 +148,7 @@ extract text proposals. These text proposals would then be fed to OCR systems
 for text and LSTM/transformer-based networks for entity recognition. All these
 systems would be optimized separately.
 
-![End to end approaches](images/ctpn.png)
+![CTPN model](images/ctpn.png)
 
 ### BERT (Natural Language Processing Model)
 
@@ -160,7 +160,7 @@ to create state-of-the-art models for a wide range of tasks.
 We plan to adapt BERT or a variant of BERT to do entity recognition on
 top of OCRed output.
 
-![End to end approaches](images/non-end2end.png.png)
+![non end to end approaches](images/none2e.png)
 
 
 <!-- The ViT[[1]](#1) model uses a Transformer-like architecture to classify images.
