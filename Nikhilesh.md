@@ -205,7 +205,7 @@ bert model missclassifying emails or websites, but end2end model fares better.
 ![Stanford visual search dataset](images/funsd.png)
 
 
-## Comparison of F1 scores on the Stanford Visual Search Dataset by class
+Comparison of F1 scores on the Stanford Visual Search Dataset by class
 
  Class       	| Non-end-to-end 	| End-to-end (layoutLM)|
 |--------------------	|------------	|--------------------|
@@ -221,17 +221,16 @@ bert model missclassifying emails or websites, but end2end model fares better.
 </body>
 </html>
 
-# Gradio Demo
-
-![sample image](gradio_sample_images/white_matter_changes.png)
-
-Please use the above image from our test set to try out the demo. You can find more images from our test set [here](https://github.com/gowtham1997/CS639-website/tree/main/gradio_sample_images)
-
-<iframe src="https://f5db3d010e2e6201.gradio.app" width="1200" height="900"></iframe>
-
-If the above demo is not working as expected, please feel free to email us at {msreedhar/gramesh4}[at]wisc.edu
-
-
 ## References
-<a id="1">[1]</a> [Pre-training of deep bidirectional transformers for language understanding] by <br>
-<a id="2">[2]</a> [Towards Robust Vision Transformer]<br>
+<a id="1">[1]</a> Devlin, J., Chang, M.-W., Lee, K., and Toutanova, K. Bert:
+Pre-training of deep bidirectional transformers for language understanding, 2019.
+ <br>
+<a id="2">[2]</a> Dodds, E., Nguyen, H., Herdade, S., Culpepper, J., Kae, A., and
+Garrigues, P. Learning embeddings for product visual search with triplet
+loss and online sampling, 2018.<br>
+<a id="2">[3]</a> Driess, D., Xia, F., Sajjadi, M. S. M., Lynch, C., Chowdhery, A.,
+Ichter, B., Wahid, A., Tompson, J., Vuong, Q., Yu, T., Huang,
+6W., Chebotar, Y., Sermanet, P., Duckworth, D., Levine, S., Vanhoucke, V., Hausman, K., Toussaint, M., Greff, K., Zeng, A.,
+Mordatch, I., and Florence, P. Palm-e: An embodied multimodal
+language model, 2023.<br>
+
