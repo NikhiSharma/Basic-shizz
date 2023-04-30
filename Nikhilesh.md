@@ -216,6 +216,14 @@ Comparison of F1 scores on the Stanford Visual Search Dataset by class
 | Email 	|     0.72    	|         0.91        	|
 | Overall 	|     0.81   	|         0.92        	|
 
+
+## Qualitative comparison on RVL-CDIP classes
+
+![Quantitative comparison on RVL-CDIP classes](images/TSNE.png)
+
+We randomly sampled 100 examples from each class and plotted the TSNE projection of the embedding.
+For LayoutLM, we use the [CLS] token, while for resnet we get embedding from image2vec library.
+
  </div>
 
 </body>
